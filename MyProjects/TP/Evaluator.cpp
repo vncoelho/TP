@@ -17,7 +17,10 @@ EvaluationTP& TPEvaluator::evaluate(const RepTP& rep)
 	// 'rep' is the representation of the solution
 
 	double fo = 0; // Evaluation Function Value
-
+	cout<<pTP.inputs<<endl;
+	int nSamples = pTP.getNSamples();
+	cout<<"nSamples: "<<nSamples<<endl;
+	getchar();
 
 	cout<<"checking values of tree"<<endl;
 	return *new EvaluationTP(fo);

@@ -1,4 +1,4 @@
-all: clean app_TP
+all: app_TP
 
 SRC_TP = $(wildcard TP/*.cpp) mainTP.cpp
 

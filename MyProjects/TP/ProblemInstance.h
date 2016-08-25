@@ -22,6 +22,8 @@ public:
 	ProblemInstance();
 	
 	virtual ~ProblemInstance();
+
+	int getNSamples();
 };
 
 

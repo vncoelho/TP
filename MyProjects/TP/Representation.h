@@ -6,9 +6,23 @@
 
 using namespace std;
 
+enum Operation
+{
+	opOperator, opVar
+};
+
+//Node characteristics
+struct NodeChar
+{
+	Operation nT;
+	int typeIndex; //index for accessing that specific type
+	int varLag; //special variable when accessing time series
+
+};
+
 struct Node
 {
-	pair<string,int> operation;
+	NodeChar nodeChar;
 	vector<Node*> children;
 
 	friend ostream & operator<<(ostream & os, const Node& rep)
@@ -23,14 +37,16 @@ struct Node
 
 	static void rPrintNode(Node* root)
 	{
-		cout << "(op:" << root->operation.first<<"/"<<root->operation.second << ",|c|=" << root->children.size() << "): { ";
+
+		cout << "(op:" << root->nodeChar.nT << "/" << root->nodeChar.typeIndex << "/" << root->nodeChar.varLag << ",|c|=" << root->children.size() << "): { ";
+
 		//for (Node* n : root->children){
-		for(unsigned i=0; i<root->children.size(); i++){
+		for (unsigned i = 0; i < root->children.size(); i++)
+		{
 			cout << endl;
 			rPrintNode(root->children[i]);
 		}
-		cout << "OIIII" << endl;
-		cout << "} ";
+		cout << "}  \n";
 
 	}
 

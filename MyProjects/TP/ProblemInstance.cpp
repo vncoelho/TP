@@ -1,5 +1,7 @@
 #include "ProblemInstance.h"
-#include "../../OptFrame/Util/printable.h"
+
+
+
 
 ProblemInstance::ProblemInstance()
 {
@@ -7,10 +9,10 @@ ProblemInstance::ProblemInstance()
 
 	try
 	{
-		fileBanco = new File("./MyProjects/Instance/banco");
+		fileBanco = new File("./Instance/banco");
 	} catch (FileNotFound& f)
 	{
-		cout << "File '" << "./MyProjects/Instance/banco" << "' not found" << endl;
+		cout << "File '" << "./Instance/banco" << "' not found" << endl;
 		exit(1);
 	}
 
@@ -29,7 +31,10 @@ ProblemInstance::ProblemInstance()
 		}
 		inputsValues.push_back(sampleVar);
 
+		cout<<inputsValues<<endl;
 	}
+
+	cout<<"while ended"<<endl;
 
 
 
@@ -42,4 +47,8 @@ ProblemInstance::ProblemInstance()
 
 ProblemInstance::~ProblemInstance()
 {
+}
+
+int ProblemInstance::getNSamples(){
+	return inputs.size();
 }

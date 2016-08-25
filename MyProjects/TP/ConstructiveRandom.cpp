@@ -2,10 +2,10 @@
 
 using namespace TP;
 
-ConstructiveRandom::ConstructiveRandom(ProblemInstance& _pTP, RandGen& _rg) :
-		pTP(_pTP), rg(_rg)
+ConstructiveRandom::ConstructiveRandom(ProblemInstance& _pTP, RandGen& _rg, int _nodeMaxChildren, int _treeMaxDepth) :
+		pTP(_pTP), rg(_rg), nodeMaxChildren(_nodeMaxChildren), treeMaxDepth(_treeMaxDepth)
 {
-	nLayers = 10;
+
 }
 
 ConstructiveRandom::~ConstructiveRandom()
@@ -31,29 +31,42 @@ ConstructiveRandom::~ConstructiveRandom()
 //	return previousNode.children.at(previousNodePos);
 //}
 
-void ConstructiveRandom::fillNode(Node& node, int nOperators, int nVariables, int maxChildren, int maxDepth)
+void ConstructiveRandom::fillNode(Node& node, int nOperators, int nVariables, int nodeMaxChildren, int treeMaxDepth)
 {
-	if (maxDepth == 0)
+	if (treeMaxDepth == 0)
 		return;
 
-	int nChildren = 2 * (rg.rand(maxChildren) + 1);
-	node.children = vector<Node*>(nChildren, NULL);
+	int nRandomChildren = 0;
+	if (node.nodeChar.nT == opOperator)
+	{
+		nRandomChildren = 2 * (rg.rand(nodeMaxChildren) + 1);
+		node.children = vector<Node*>(nRandomChildren, NULL);
+	}
 
-	for (int i = 0; i < nChildren; i++)
+	for (int i = 0; i < nRandomChildren; i++)
 	{
 		Node* newNode = new Node;
 		node.children[i] = newNode;
-		int nROperator = rg.rand(nOperators);
-		int rVariable = rg.rand(nVariables);
+
 		int operatorOrVariable = rg.rand(2);
 
 		if (operatorOrVariable == 0)
-			newNode->operation = make_pair(pTP.operators[nROperator], 0);
+		{
+			int nROperator = rg.rand(nOperators);
+			newNode->nodeChar.nT = opOperator;
+			newNode->nodeChar.typeIndex = nROperator;
+			newNode->nodeChar.varLag = -1;
 //
+		}
 		if (operatorOrVariable == 1)
-			newNode->operation = make_pair(to_string(rVariable), 1);
+		{
+			int rVariable = rg.rand(nVariables);
+			newNode->nodeChar.nT = opVar;
+			newNode->nodeChar.typeIndex = rVariable;
+			newNode->nodeChar.varLag = 0;
+		}
 
-		fillNode(*newNode, nOperators, nVariables, maxChildren, maxDepth - 1);
+		fillNode(*newNode, nOperators, nVariables, nodeMaxChildren, treeMaxDepth - 1);
 
 	}
 
@@ -63,6 +76,7 @@ void ConstructiveRandom::fillNode(Node& node, int nOperators, int nVariables, in
 //	previousNode.children.at(previousNodePos)->children = currentChildren;
 //
 //	return previousNode.children.at(previousNodePos);
+	return;
 }
 
 Solution<RepTP, MY_ADS>& ConstructiveRandom::generateSolution()
@@ -74,14 +88,16 @@ Solution<RepTP, MY_ADS>& ConstructiveRandom::generateSolution()
 
 //	cout<<nOperators<<"/"<<nVariables<<endl;
 //	getchar();
+
 	int firstOperator = rg.rand(nOperators);
-
 	Node* firstNode = new Node;
-	firstNode->operation = make_pair(pTP.operators[firstOperator], 0);
+	firstNode->nodeChar.nT = opOperator;
+	firstNode->nodeChar.typeIndex = firstOperator;
+	firstNode->nodeChar.varLag = -1;
 
-	int maxDepth = 3;
 
-	fillNode(*firstNode, nOperators, nVariables, 3, maxDepth);
+
+	fillNode(*firstNode, nOperators, nVariables, nodeMaxChildren, treeMaxDepth);
 
 	Node::printNode(firstNode);
 

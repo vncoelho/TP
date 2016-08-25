@@ -28,19 +28,20 @@ class ConstructiveRandom: public Constructive<RepTP, MY_ADS>
 private:
 	ProblemInstance& pTP;
 	RandGen& rg;
-	int nLayers;
+	int nodeMaxChildren;
+	int treeMaxDepth;
 
 	// Your private vars
 
 public:
 
-	ConstructiveRandom(ProblemInstance& _pTP, RandGen& rg);
+	ConstructiveRandom(ProblemInstance& _pTP, RandGen& _rg, int _nodeMaxChildren, int _treeMaxDepth);
 
 	virtual ~ConstructiveRandom();
 
 	Solution<RepTP, MY_ADS>& generateSolution();
 
-	void fillNode (Node& previousNode, int nOperators, int nVariables, int maxChildren, int maxDepth);
+	void fillNode(Node& previousNode, int nOperators, int nVariables, int nodeMaxChildren, int treeMaxDepth);
 };
 
 }
