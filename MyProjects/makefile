@@ -1,0 +1,19 @@
+all: clean app_TP
+
+SRC_TP = $(wildcard TP/*.cpp) mainTP.cpp
+
+app_TP: $(SRC_TP:%.cpp=%.o) TPScanner.o
+	g++ -o $@ $^
+
+TPScanner.o: ../OptFrame/Scanner++/Scanner.cpp
+	g++ -c $(CPPFLAGS) ../OptFrame/Scanner++/Scanner.cpp -o TPScanner.o
+
+-include $(SRC_TP:%.cpp=%.d)
+
+CPPFLAGS = --std= c++11 -Wall -Ofast  
+#CPPFLAGS += -MD -MP
+
+clean: 
+	rm -f app_*
+	rm -f *.o *.d
+	rm -f TP/*.o TP/*.d
