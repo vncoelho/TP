@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 	// Initialize here all your OptFrame components
 	// (ProblemInstance, Evaluator, Constructive, ...)
 
-	cout << "Program ended successfully" << endl;
+	cout << "PROGRAMM ended successfully" << endl;
 
 	return 0;
 }
