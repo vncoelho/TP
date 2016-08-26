@@ -45,7 +45,7 @@ void ConstructiveRandom::fillNode(Node& node, int nOperators, int nVariables, in
 
 	for (int i = 0; i < nRandomChildren; i++)
 	{
-		Node* newNode = new Node;
+		Node* newNode = new Node(&node);
 		node.children[i] = newNode;
 
 		int operatorOrVariable = rg.rand(2);
@@ -90,7 +90,7 @@ Solution<RepTP, MY_ADS>& ConstructiveRandom::generateSolution()
 //	getchar();
 
 	int firstOperator = rg.rand(nOperators);
-	Node* firstNode = new Node;
+	Node* firstNode = new Node;// or new Node(NULL)
 	firstNode->nodeChar.nT = opOperator;
 	firstNode->nodeChar.typeIndex = firstOperator;
 	firstNode->nodeChar.varLag = -1;

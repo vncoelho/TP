@@ -24,15 +24,25 @@ struct Node
 {
 	NodeChar nodeChar;
 	vector<Node*> children;
+	Node* father;
 
 	// default empty constructor
 	Node()
 	{
+		// Luke, I'm ..... Nooooooooo!
+		father = NULL;
+	}
+
+	// father constructor
+	Node(Node* _father)
+	{
+		father = _father;
 	}
 
 	// copy constructor
 	Node(const Node& node)
 	{
+		father   = node.father;
 		nodeChar = node.nodeChar;
 		for(unsigned i=0; i<node.children.size(); i++)
 			children.push_back(new Node(*node.children[i]));
@@ -41,6 +51,7 @@ struct Node
 	// move constructor (C++11 only!)
 	Node(Node&& node)
 	{
+		father   = node.father;
 		nodeChar = node.nodeChar;
 		// steal from the dying friend... (dirty move!)
 		for(unsigned i=0; i<node.children.size(); i++)
@@ -52,6 +63,7 @@ struct Node
 	// destructor (recursive destructor call cleans whole tree)
 	~Node()
 	{
+		father = NULL;
 		// destroy dependent children
 		for(unsigned i=0; i<children.size(); i++)
 		{
@@ -70,6 +82,7 @@ struct Node
 		// self-check, very important!!
 		if(this == &node)
 			return *this;
+		father   = node.father;
 		nodeChar = node.nodeChar;
 		for(unsigned i=0; i<children.size(); i++)
 			delete children[i];
@@ -85,6 +98,7 @@ struct Node
 		// self-check... don't know if needed with move assignment (???)
 		if (this == &node)
 			return *this;
+		father   = node.father;
 		nodeChar = node.nodeChar;
 		for (unsigned i = 0; i < children.size(); i++)
 			delete children[i];
@@ -94,6 +108,7 @@ struct Node
 			children.push_back(node.children[i]);
 		// clear without delete!
 		node.children.clear();
+		node.father = NULL;
 		return *this;
 	}
 
