@@ -25,6 +25,79 @@ struct Node
 	NodeChar nodeChar;
 	vector<Node*> children;
 
+	// default empty constructor
+	Node()
+	{
+	}
+
+	// copy constructor
+	Node(const Node& node)
+	{
+		nodeChar = node.nodeChar;
+		for(unsigned i=0; i<node.children.size(); i++)
+			children.push_back(new Node(*node.children[i]));
+	}
+
+	// move constructor (C++11 only!)
+	Node(Node&& node)
+	{
+		nodeChar = node.nodeChar;
+		// steal from the dying friend... (dirty move!)
+		for(unsigned i=0; i<node.children.size(); i++)
+			children.push_back(node.children[i]);
+		// very important to empty the vector WITHOUT deleting the elements...
+		node.children.clear();
+	}
+
+	// destructor (recursive destructor call cleans whole tree)
+	~Node()
+	{
+		// destroy dependent children
+		for(unsigned i=0; i<children.size(); i++)
+		{
+			// delete children
+			delete children[i];
+			// safety NULL assign
+			children[i] = NULL;
+		}
+		// empty vector of garbage references
+		children.clear();
+	}
+
+	// assignment operator
+	Node& operator=(const Node& node)
+	{
+		// self-check, very important!!
+		if(this == &node)
+			return *this;
+		nodeChar = node.nodeChar;
+		for(unsigned i=0; i<children.size(); i++)
+			delete children[i];
+		children.clear();
+		for(unsigned i=0; i<node.children.size(); i++)
+			children.push_back(new Node(*node.children[i]));
+		return *this;
+	}
+
+	// move assignment operator (C++11 only!)
+	Node& operator=(Node&& node)
+	{
+		// self-check... don't know if needed with move assignment (???)
+		if (this == &node)
+			return *this;
+		nodeChar = node.nodeChar;
+		for (unsigned i = 0; i < children.size(); i++)
+			delete children[i];
+		children.clear();
+		// steal from dying friend...
+		for (unsigned i = 0; i < node.children.size(); i++)
+			children.push_back(node.children[i]);
+		// clear without delete!
+		node.children.clear();
+		return *this;
+	}
+
+
 	friend ostream & operator<<(ostream & os, const Node& rep)
 	{
 		os << "=======================================" << endl;

@@ -101,9 +101,17 @@ Solution<RepTP, MY_ADS>& ConstructiveRandom::generateSolution()
 
 	Node::printNode(firstNode);
 
-	RepTP newRep = *firstNode;
+	//RepTP* newRep = firstNode;
 
-	return *new Solution<RepTP, MY_ADS>(newRep);
+	// copy representation to solution
+	Solution<RepTP>& sol = *new Solution<RepTP>(*firstNode);
+	// destroy original solution
+	delete firstNode;
+	// return solution
+	return sol;
+
+	// C++11 alternative... MOVE AND DESTROY EMPTY POINTER!
+	//return *new Solution<RepTP>(std::move(*firstNode));
 
 //	vector<Node*> firstChildren(nRLayers, NULL);
 //	firstNode->children = firstChildren;
