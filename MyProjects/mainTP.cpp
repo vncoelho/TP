@@ -22,13 +22,14 @@
 #include "./TP/Solution.h"
 #include "./TP/Evaluation.h"
 #include "./TP/Evaluator.h"
+#include "../OptFrame/Heuristics/Empty.hpp"
+#include "../OptFrame/Heuristics/GRASP/BasicGRASP.hpp"
 
 using namespace std;
 using namespace optframe;
 using namespace TP;
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
 	RandGen rg;
 	long seed = time(NULL);
 	seed = 10;
@@ -39,21 +40,28 @@ int main(int argc, char **argv)
 	ProblemInstance p;
 	cout << "problem instance ok " << endl;
 
-	int nodeMaxChildren = 5;
-	int treeMaxDepth = 3;
+	int nodeMaxChildren = 1;
+	int treeMaxDepth = 10;
 	ConstructiveRandom c(p, rg, nodeMaxChildren, treeMaxDepth);
 
-	Solution<RepTP>& sol = c.generateSolution();
+	SolutionTP& sol = c.generateSolution(0);
 	cout << "solucao gerada com sucesso!" << endl;
 	TPEvaluator eval(p);
 	Evaluation& e = eval.evaluate(sol.getR());
 	cout << e.evaluation();
 
-	delete& sol;
-	delete& e;
+	delete &sol;
+	delete &e;
 
-	// Initialize here all your OptFrame components
-	// (ProblemInstance, Evaluator, Constructive, ...)
+	EmptyLocalSearch<RepTP, MY_ADS> emptyLS;
+	BasicGRASP<RepTP, MY_ADS> g(eval, c, emptyLS, 0, 10000000);
+
+	g.setMessageLevel(3);
+
+
+
+	cout << " \n RUNNING OPTIMIZATION ALGORITHMS..." << endl;
+	pair<SolutionTP&, Evaluation&>* graspSearchSol = g.search(60);
 
 	cout << "PROGRAMM ended successfully" << endl;
 

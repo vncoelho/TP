@@ -70,16 +70,15 @@ void ConstructiveRandom::fillNode(Node& node, int nOperators, int nVariables, in
 
 	}
 
-//
-//	int nRLayers = rg.rand(nextMaxDepth);
-//	vector<Node*> currentChildren(nRLayers);
-//	previousNode.children.at(previousNodePos)->children = currentChildren;
-//
-//	return previousNode.children.at(previousNodePos);
 	return;
 }
 
 Solution<RepTP, MY_ADS>& ConstructiveRandom::generateSolution()
+{
+	return generateSolution(0);
+}
+
+Solution<RepTP, MY_ADS>& ConstructiveRandom::generateSolution(float notUsed)
 {
 
 //	cout << "welcome to construtive" << endl;
@@ -90,18 +89,14 @@ Solution<RepTP, MY_ADS>& ConstructiveRandom::generateSolution()
 //	getchar();
 
 	int firstOperator = rg.rand(nOperators);
-	Node* firstNode = new Node;// or new Node(NULL)
+	Node* firstNode = new Node; // or new Node(NULL)
 	firstNode->nodeChar.nT = opOperator;
 	firstNode->nodeChar.typeIndex = firstOperator;
 	firstNode->nodeChar.varLag = -1;
 
-
-
 	fillNode(*firstNode, nOperators, nVariables, nodeMaxChildren, treeMaxDepth);
 
-	Node::printNode(firstNode);
-
-	//RepTP* newRep = firstNode;
+//	Node::printNode(firstNode);
 
 	// copy representation to solution
 	Solution<RepTP>& sol = *new Solution<RepTP>(*firstNode);
@@ -112,63 +107,5 @@ Solution<RepTP, MY_ADS>& ConstructiveRandom::generateSolution()
 
 	// C++11 alternative... MOVE AND DESTROY EMPTY POINTER!
 	//return *new Solution<RepTP>(std::move(*firstNode));
-
-//	vector<Node*> firstChildren(nRLayers, NULL);
-//	firstNode->children = firstChildren;
-
-//	for(unsigned i=0; i<)
-//
-//
-//
-//	vector<Node*> firstChildren(nRLayers, NULL);
-//	firstNode->children = firstChildren;
-//
-//	int childrenMax = 5;
-//	int childrenPrevDepth = nRLayers;
-//	Node* prevNode = firstNode;
-//
-//	cout << "going to childrens" << endl;
-//	getchar();
-//
-//	for(unsigned i=0; i<firstChildren.size(); i++)
-//	{
-//
-//	}
-//	while (childrenPrevDepth != 0)
-//	{
-//		Node* currentChildren = fillNode(*prevNode, childrenPrevDepth, nOperators, nVariables, childrenPrevDepth);
-//		childrenPrevDepth = rg.rand(childrenMax);
-//
-//
-//		prevNode = currentChildren;
-//	}
-
-//	RepTP newRep = *firstNode;
-
-//	return *new Solution<RepTP, MY_ADS>(newRep);
-//}
-//
-//	firstNode->operation = pTP.operators[firstOperator];
-//	firstNode->children = firstChildren;
-//
-//	int childrenMaxDepth = 5;
-//	int childrenPrevDepth = nRLayers;
-//	Node* prevNode = firstNode;
-//
-//	cout << "going to childrens" << endl;
-//	getchar();
-//
-//	while (childrenPrevDepth != 0)
-//	{
-//		Node* currentChildren = fillNode(*prevNode, childrenPrevDepth, nOperators, nVariables, childrenPrevDepth);
-//		childrenPrevDepth = rg.rand(childrenMaxDepth);
-//
-//
-//		prevNode = currentChildren;
-//	}
-//
-//	cout << "going to print..." << endl;
-//	getchar();
-//	printNode(firstNode);
 
 }

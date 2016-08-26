@@ -3,7 +3,7 @@
 
 #include "../../OptFrame/Constructive.h"
 #include "../../OptFrame/RandGen.hpp"
-
+#include "../../OptFrame/Heuristics/GRASP/GRConstructive.h"
 #include "ProblemInstance.h"
 
 #include "Representation.h"
@@ -23,7 +23,7 @@ using namespace optframe;
 namespace TP
 {
 
-class ConstructiveRandom: public Constructive<RepTP, MY_ADS>
+class ConstructiveRandom: public GRConstructive<RepTP, MY_ADS>
 {
 private:
 	ProblemInstance& pTP;
@@ -40,6 +40,7 @@ public:
 	virtual ~ConstructiveRandom();
 
 	Solution<RepTP, MY_ADS>& generateSolution();
+	Solution<RepTP, MY_ADS>& generateSolution(float notUsed);
 
 	void fillNode(Node& previousNode, int nOperators, int nVariables, int nodeMaxChildren, int treeMaxDepth);
 };

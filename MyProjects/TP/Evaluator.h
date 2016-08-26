@@ -37,6 +37,8 @@ public:
 
 	virtual bool betterThan(double f1, double f2);
 	
+	double getNodeValue(const Node* root, int s);
+
 	virtual bool isMinimization() const;
 };
 
